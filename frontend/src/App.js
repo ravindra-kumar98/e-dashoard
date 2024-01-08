@@ -6,6 +6,7 @@ import SignUp from './components/SignUp';
 import SignIn from './components/SignIn';
 import PrivateRoute from './components/PrivateRoute';
 import AddProduct from './components/AddProduct';
+import ProductsList from './components/ProducstList';
 
 function App()
 {
@@ -15,7 +16,7 @@ function App()
         <NavComp />
         <Routes>
           <Route element={<PrivateRoute />}>
-            <Route path='/' element={<h1>Home</h1>} />
+            <Route path='/' element={<ProductsList />} />
             <Route path='/add' element={<AddProduct />} />
             <Route path='/update' element={<h1>update</h1>} />
             <Route path='/logout' element={<h1>logout</h1>} />

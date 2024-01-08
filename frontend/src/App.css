@@ -141,7 +141,6 @@ input#setPassword {
 
 .signup_form {
   height: calc(100vh - 100px);
-  overflow-y: auto;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -187,4 +186,14 @@ footer {
   right: 30px;
   bottom: 40px;
   position: fixed;
+}
+.alert-success {
+  border: 0;
+  /* background-color: #008000;
+  color: #fff; */
+  padding: 10px 15px;
+  border-radius: 0;
+}
+.upload_file_inp {
+  line-height: 28px;
 }

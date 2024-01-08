@@ -22,7 +22,6 @@ function SignUp()
 
   const validateForm = () =>
   {
-    debugger;
     const newErrors = { fname: '', lname: '', email: '', password: '', cpassword: '' };
 
     if (!fname)
@@ -104,12 +103,25 @@ function SignUp()
           password: password
         })
       };
-      let result = await fetch("http://localhost:9000/signup", reqOpt);
-      result = await result.json();
-      localStorage.setItem('user', JSON.stringify(result));
-      if (result)
+      try
       {
-        navigate('/')
+        let result = await fetch("http://localhost:9000/signup", reqOpt);
+        result = await result.json();
+        if (result.error)
+        {
+          setError({ ...error, email: result.error });
+        } else
+        {
+          localStorage.setItem('user', JSON.stringify(result));
+          if (result)
+          {
+            navigate('/')
+          }
+        }
+      }
+      catch (error)
+      {
+        console.error('Error during signup:', error);
       }
     }
   }

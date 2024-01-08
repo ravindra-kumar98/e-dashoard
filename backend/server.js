@@ -21,7 +21,7 @@ app.post("/signup", async (req, res) =>
         let userExist = await User.findOne({ email: email });
         if (userExist)
         {
-            return res.status(403).send("User already exist");
+            return res.status(403).json({ error: 'User already exists' });
         }
         const salt = await bycrypt.genSalt(10);
         const hashedPassword = await bycrypt.hash(password, salt);
@@ -45,13 +45,13 @@ app.post("/signin", async (req, res) =>
         const user = await User.findOne({ email: email });
         if (!user)
         {
-            return res.status(404).json({ message: "user not found" });
+            return res.status(404).json({ error: "user not found" });
         }
         const passwordMatch = await bycrypt.compare(password, user.password);
         //const passwordMatch = await User.findOne({ password: password });
         if (!passwordMatch)
         {
-            return res.status(401).json({ massage: "password Mismatch" })
+            return res.status(401).json({ error: "password Mismatch" })
         }
         const userWithoutPassword = { ...user.toObject() };
         delete userWithoutPassword.password;
@@ -59,7 +59,6 @@ app.post("/signin", async (req, res) =>
 
     } catch (error)
     {
-        console.error(error);
         res.status(500).send("Internal Server Error");
     }
 })
@@ -69,10 +68,10 @@ app.post("/add-product", async (req, res) =>
     const { name } = req.body;
     try
     {
-        let prodNm = await Product.findOne({ name });
+        let prodNm = await Product.findOne({ name: name });
         if (prodNm)
         {
-            return res.status(403).send("Product already exist")
+            return res.status(403).json({ error: "Product already exist" })
         } else
         {
             let product = new Product(req.body);

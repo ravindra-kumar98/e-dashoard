@@ -8,7 +8,7 @@ function AlertSuccess()
                 'success'
             ].map((variant) => (
                 <Alert key={variant} variant={variant}>
-                    This is a {variant} alert—check it out!
+                    Process successfully completed
                 </Alert>
             ))}
         </>
