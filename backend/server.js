@@ -8,6 +8,23 @@ app.use(express.json());
 app.use(cors());
 const bycrypt = require('bcrypt');
 const checkAuth = require('./middleware/checkAuth');
+const multer = require('multer');
+const path = require('path');
+app.use('/uploads', express.static('uploads'));
+
+// Multer Configuration
+const storage = multer.diskStorage({
+    destination: function (req, file, cb)
+    {
+        cb(null, 'uploads/'); // Specify the directory where you want to store uploaded files
+    },
+    filename: function (req, file, cb)
+    {
+        const ext = path.extname(file.originalname);
+        cb(null, Date.now() + ext);
+    },
+});
+const upload = multer({ storage: storage });
 
 app.post("/signup", async (req, res) =>
 {
@@ -63,23 +80,31 @@ app.post("/signin", async (req, res) =>
     }
 })
 
-app.post("/add-product", async (req, res) =>
+app.post('/add-product', upload.single('productImage'), async (req, res) =>
 {
     const { name } = req.body;
     try
     {
-        let prodNm = await Product.findOne({ name: name });
-        if (prodNm)
-        {
-            return res.status(403).json({ error: "Product already exist" })
-        } else
-        {
-            let product = new Product(req.body);
-            let result = await product.save();
-            res.send(result);
-        }
-
+        // Replace backslashes with forward slashes
+        const filePath = req.file.path.replace(/\\/g, '/');
+        const product = new Product({
+            ...req.body,
+            productImage: filePath, // Save the file path in the productImage field
+        });
+        let result = await product.save();
+        res.send(result);
     } catch (error)
+    {
+        res.status(500).send('Internal Server Error');
+    }
+});
+app.get('/product-list', async (req, res) =>
+{
+    try
+    {
+        const products = await Product.find(); // Fetch all products from the database
+        res.send(products);
+    } catch (err)
     {
         res.status(500).send("Internal Server Error");
     }

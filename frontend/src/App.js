@@ -2,11 +2,16 @@ import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Footer from './components/Footer';
 import NavComp from './components/NavComp';
-import SignUp from './components/SignUp';
-import SignIn from './components/SignIn';
+import SignUp from './pages/SignUp';
+import SignIn from './pages/SignIn';
 import PrivateRoute from './components/PrivateRoute';
-import AddProduct from './components/AddProduct';
-import ProductsList from './components/ProducstList';
+// import AddProduct from './components/AddProduct';
+import AddProduct from './pages/AddProduct';
+//import ProductsList from './components/ProducstList';
+import Profile from './pages/Profile';
+import Product from './pages/Product';
+import Update from './pages/Update';
+import ForgetPassword from './pages/ForgetPassword';
 
 function App()
 {
@@ -16,14 +21,15 @@ function App()
         <NavComp />
         <Routes>
           <Route element={<PrivateRoute />}>
-            <Route path='/' element={<ProductsList />} />
+            <Route path='/' element={<Product />} />
             <Route path='/add' element={<AddProduct />} />
-            <Route path='/update' element={<h1>update</h1>} />
-            <Route path='/logout' element={<h1>logout</h1>} />
-            <Route path='/profile' element={<h1>Profile</h1>} />
+            <Route path='/update' element={<Update />} />
+            {/* <Route path='/logout' element={<section className='sec-height'>logout</section>} /> */}
+            <Route path='/profile' element={<Profile />} />
           </Route>
           <Route path='/signin' element={<SignIn />} />
           <Route path='/signup' element={<SignUp />} />
+          <Route path='/forget-password' element={<ForgetPassword />} />
         </Routes>
       </BrowserRouter>
       <Footer />

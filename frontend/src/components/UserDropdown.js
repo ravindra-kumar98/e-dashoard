@@ -21,10 +21,8 @@ function UserDropdown()
             </Dropdown.Toggle>
 
             <Dropdown.Menu>
-                <Dropdown.Item href="#/action-1">Profile</Dropdown.Item>
-                <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-                <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
-                <Dropdown.Item href="#/signin" onClick={() => logOut()}>Logout</Dropdown.Item>
+                <Dropdown.Item onClick={(e) => { e.preventDefault(); navigate('/profile') }}>Profile</Dropdown.Item>
+                <Dropdown.Item onClick={(e) => { e.preventDefault(); logOut() }}>Logout</Dropdown.Item>
             </Dropdown.Menu>
         </Dropdown>
     );
