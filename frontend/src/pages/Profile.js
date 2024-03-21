@@ -1,9 +1,34 @@
 import { faEdit } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 
 const Profile = () =>
 {
+    const [user, setUser] = useState([]);
+    const navigate = useNavigate();
+    useEffect(() =>
+    {
+        const fdata = async () =>
+        {
+            try
+            {
+                let response = await fetch('http://localhost:9000/profile');
+                if (!response.ok)
+                {
+                    throw new Error('Failed to fetch data');
+                }
+                let data = await response.json();
+                setUser(data);
+                console.log(data);
+            } catch (error)
+            {
+                console.error('error during fetching data', error)
+            }
+        }
+        fdata();
+    }, []);
+
     return (
         <>
             <section className='sec-height pt-0'>
@@ -20,7 +45,7 @@ const Profile = () =>
                     <div className='user-content'>
                         <div className='info-wrap'>
                             <div className='info'>
-                                <h1 className='name'>Ravindra Kumar</h1>
+                                <h1 className='name'>Name</h1>
                                 <h2 className='address'>Sarita Vihar New Delhi - 110076</h2>
                                 <ul>
                                     <li>Role : <span>Admin</span></li>
@@ -33,7 +58,7 @@ const Profile = () =>
                                 </ul>
                             </div>
                             <div className='update-info'>
-                                <button> <FontAwesomeIcon icon={faEdit} /> Edit Profile</button>
+                                <button onClick={(e) => { e.preventDefault(); navigate('/edit-profile') }}  > <FontAwesomeIcon icon={faEdit} /> Edit Profile</button>
                             </div>
                         </div>
                     </div>

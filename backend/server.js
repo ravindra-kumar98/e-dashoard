@@ -2,21 +2,21 @@ const express = require('express');
 const cors = require('cors');
 require('./db/config');
 const User = require('./model/user');
-const Product = require('./model/product')
+const Product = require('./model/product');
 const app = express();
 app.use(express.json());
 app.use(cors());
 const bycrypt = require('bcrypt');
-const checkAuth = require('./middleware/checkAuth');
+// const checkAuth = require('./middleware/checkAuth');
 const multer = require('multer');
 const path = require('path');
 app.use('/uploads', express.static('uploads'));
-
 // Multer Configuration
 const storage = multer.diskStorage({
     destination: function (req, file, cb)
     {
-        cb(null, 'uploads/'); // Specify the directory where you want to store uploaded files
+        const uploadDir = determineUploadDirectory(req.path);
+        cb(null, uploadDir)
     },
     filename: function (req, file, cb)
     {
@@ -24,6 +24,19 @@ const storage = multer.diskStorage({
         cb(null, Date.now() + ext);
     },
 });
+function determineUploadDirectory(endpoint)
+{
+    // Customize upload directory based on endpoint
+    switch (endpoint)
+    {
+        case '/add-product':
+            return 'uploads/';
+        case '/edit-profile':
+            return 'profile/';
+        default:
+            return 'uploads/'; // Default directory
+    }
+}
 const upload = multer({ storage: storage });
 
 app.post("/signup", async (req, res) =>
@@ -53,7 +66,6 @@ app.post("/signup", async (req, res) =>
         res.status(500).send("Internal Server Error");
     }
 });
-
 app.post("/signin", async (req, res) =>
 {
     const { email, password } = req.body;
@@ -79,10 +91,9 @@ app.post("/signin", async (req, res) =>
         res.status(500).send("Internal Server Error");
     }
 })
-
 app.post('/add-product', upload.single('productImage'), async (req, res) =>
 {
-    const { name } = req.body;
+    // const { name } = req.body;
     try
     {
         // Replace backslashes with forward slashes
@@ -104,6 +115,17 @@ app.get('/product-list', async (req, res) =>
     {
         const products = await Product.find(); // Fetch all products from the database
         res.send(products);
+    } catch (err)
+    {
+        res.status(500).send("Internal Server Error");
+    }
+})
+app.get('/profile', async (req, res) =>
+{
+    try
+    {
+        const userList = await User.find();
+        res.send(userList);
     } catch (err)
     {
         res.status(500).send("Internal Server Error");

@@ -12,6 +12,7 @@ import Profile from './pages/Profile';
 import Product from './pages/Product';
 import Update from './pages/Update';
 import ForgetPassword from './pages/ForgetPassword';
+import EditProfile from './pages/EditProfile';
 
 function App()
 {
@@ -26,6 +27,7 @@ function App()
             <Route path='/update' element={<Update />} />
             {/* <Route path='/logout' element={<section className='sec-height'>logout</section>} /> */}
             <Route path='/profile' element={<Profile />} />
+            <Route path='/edit-profile' element={<EditProfile />} />
           </Route>
           <Route path='/signin' element={<SignIn />} />
           <Route path='/signup' element={<SignUp />} />

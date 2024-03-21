@@ -9,7 +9,7 @@ const Product = () =>
         {
             try
             {
-                let response = await fetch(' http://localhost:9000/product-list');
+                let response = await fetch('http://localhost:9000/product-list');
                 if (!response.ok)
                 {
                     throw new Error('Failed to fetch data');

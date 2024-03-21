@@ -1,5 +1,17 @@
+input:focus-visible {
+  outline-offset: 0px;
+  outline: 0;
+}
+button:focus-visible {
+  outline-offset: 0px;
+  outline: 0;
+}
+button:focus,
+button:hover {
+  color: #fff;
+}
 .navbar {
-  background-color: #4caf50;
+  background-color: #671ddf;
   height: 60px;
 }
 
@@ -28,7 +40,7 @@
 .nav-link:focus,
 .nav-link:hover {
   color: #fff;
-  background-color: #4caf50;
+  background-color: #671ddf;
 }
 
 .navbar-nav .nav-link.active,
@@ -105,6 +117,9 @@ input#setPassword {
   font-family: "Montserrat-Medium";
   border-radius: 0.25rem;
 }
+.form-select {
+  border-color: #adb5bd;
+}
 
 .form-control::placeholder {
   color: #111;
@@ -127,13 +142,19 @@ input#setPassword {
 .form-control:focus {
   color: #111;
   background-color: #fff;
-  border-color: #4caf50;
+  border-color: #671ddf;
   outline: 0;
   box-shadow: none;
 }
-
+.form-select:focus {
+  color: #111;
+  background-color: #fff;
+  border-color: #671ddf;
+  outline: 0;
+  box-shadow: none;
+}
 .submit-btn {
-  background-color: #4caf50;
+  background-color: #671ddf;
   color: #fff;
   width: 100%;
   display: flex;
@@ -170,7 +191,7 @@ p.acc_switch {
 }
 
 p.acc_switch a {
-  color: #4caf50;
+  color: #671ddf;
 }
 
 footer {
@@ -266,11 +287,72 @@ footer {
 }
 .info-wrap .update-info button {
   border: 0;
-  background-color: #4caf50;
+  background-color: #671ddf;
   color: #fff;
   font-family: "Montserrat-Medium";
   font-size: 14px;
   padding: 10px 15px;
   line-height: 14px;
   border-radius: 0.25rem;
+}
+
+.signup_form .profile-pic {
+  position: relative;
+  width: 110px;
+  height: 110px;
+  border: 5px solid #ffffff;
+  border-radius: 100%;
+  padding: 5px;
+  background-color: #671ddf;
+  margin: 0 auto;
+}
+.signup_form .profile-pic .pic .pic {
+  width: 100%;
+  height: 100%;
+}
+.signup_form .profile-pic .pic img {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+}
+.signup_form .profile-pic .pic img {
+  width: 100%;
+  height: 100%;
+  border-radius: 100%;
+}
+.update-prof-btn {
+  cursor: pointer;
+  padding: 2px 9px;
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  font-size: 12px;
+  background-color: #000000c2;
+  color: #fff;
+  transform: translateX(-50%);
+}
+.react-date-picker {
+  width: 100%;
+  height: 38px;
+  font-size: 14px;
+}
+.react-date-picker.react-date-picker--closed.react-date-picker--enabled {
+  height: 38px;
+  width: 100%;
+  font-size: 14px;
+}
+.react-date-picker__wrapper {
+  display: flex;
+  flex-grow: 1;
+  flex-shrink: 0;
+  border: 1px solid #adb5bd !important;
+  border-radius: 0.25rem;
+  color: #111;
+  width: 100%;
+  padding: 0.3rem 0.5rem;
+}
+.react-date-picker__button:enabled:hover .react-date-picker__button__icon,
+.react-date-picker__button:enabled:focus .react-date-picker__button__icon {
+  stroke: #671ddf !important;
 }

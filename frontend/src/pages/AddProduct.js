@@ -76,7 +76,7 @@ function AddProduct()
     const submitProduct = async (e) =>
     {
         e.preventDefault();
-
+        debugger;
         if (validateForm())
         {
             const formData = new FormData();
