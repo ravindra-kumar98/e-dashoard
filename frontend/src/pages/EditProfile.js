@@ -51,7 +51,7 @@ const EditProfile = () =>
     }
     return (
         <>
-            <form className='signup_form' onSubmit={updateProf} 6="multipart/form-data">
+            <form className='signup_form' onSubmit={updateProf} encType="multipart/form-data">
                 <div className='inp-wrap'>
                     <div className="row gx-2">
                         <div className="col-md-12 mb-4">
