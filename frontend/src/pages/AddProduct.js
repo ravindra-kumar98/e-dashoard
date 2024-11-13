@@ -1,7 +1,8 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
 import AlertSuccess from '../components/AlertSuccess';
+import { useParams } from 'react-router-dom';
 
 function AddProduct()
 {
@@ -11,6 +12,7 @@ function AddProduct()
     const [company, setCompany] = useState('');
     const [productImage, setProductImage] = useState('');
     const [alert, setAlert] = useState(false);
+    const { productId } = useParams();
     const [error, setError] = useState({
         name: '',
         price: '',
@@ -18,6 +20,8 @@ function AddProduct()
         company: '',
         productImage: '',
     });
+
+    const fileValue = useRef(null);
 
     const validateForm = () =>
     {
@@ -28,40 +32,19 @@ function AddProduct()
             company: '',
             productImage: '',
         };
-
-        if (!name)
-        {
-            newErrors.name = 'Please fill the product name';
-        }
-        if (!price)
-        {
-            newErrors.price = 'Please fill the product price';
-        }
-        if (!category)
-        {
-            newErrors.category = 'Please fill the product category';
-        }
-        if (!company)
-        {
-            newErrors.company = 'Please fill the product company';
-        }
-        if (!productImage)
-        {
-            newErrors.productImage = 'Please upload the product image';
-        }
-
+        if (!name) newErrors.name = 'Please fill the product name';
+        if (!price) newErrors.price = 'Please fill the product price';
+        if (!category) newErrors.category = 'Please fill the product category';
+        if (!company) newErrors.company = 'Please fill the product company';
+        if (!productImage && !productId) newErrors.productImage = 'Please upload the product image';
         setError(newErrors);
-
         return Object.values(newErrors).every((error) => !error);
     };
-
-    const fileValue = useRef(null);
 
     const fileUpload = () =>
     {
         const selectedFile = fileValue.current.files[0];
-        const fileName = selectedFile ? selectedFile.name : '';
-        setProductImage(fileName);
+        setProductImage(selectedFile ? selectedFile.name : '');
     };
 
     const resetForm = () =>
@@ -70,13 +53,44 @@ function AddProduct()
         setPrice('');
         setCategory('');
         setCompany('');
+        setProductImage('');
         fileValue.current.value = null;
     };
+
+    // Fetch product data in update mode
+    useEffect(() =>
+    {
+        //console.log("Product ID when fetching:", productId); // Check this value
+        if (productId)  
+        {
+            const fetchProduct = async () =>
+            {
+                try
+                {
+                    let response = await fetch(`http://localhost:9000/product/${productId}`);
+                    console.log(response)
+                    if (response.ok)
+                    {
+                        let data = await response.json();
+                        console.log('data', data.retrieveProduct)
+                        setName(data.retrieveProduct.name);
+                        setPrice(data.retrieveProduct.price);
+                        setCategory(data.retrieveProduct.category);
+                        setCompany(data.retrieveProduct.company);
+
+                    }
+                } catch (error)
+                {
+                    console.error("Error fetching product:", error);
+                }
+            };
+            fetchProduct();
+        }
+    }, [productId]);
 
     const submitProduct = async (e) =>
     {
         e.preventDefault();
-        debugger;
         if (validateForm())
         {
             const formData = new FormData();
@@ -84,12 +98,25 @@ function AddProduct()
             formData.append('price', price);
             formData.append('category', category);
             formData.append('company', company);
-            formData.append('productImage', fileValue.current.files[0]);
+            if (fileValue.current.files[0])
+            {
+                formData.append('productImage', fileValue.current.files[0]);
+            }
+
+            // const requestUrl = productId
+            //     ? `http://localhost:9000/update-product/${productId}`
+            //     : 'http://localhost:9000/add-product';
+
+            const requestUrl = productId
+                ? `http://localhost:9000/add-update-product/${productId}`
+                : 'http://localhost:9000/add-update-product';
+            // const requestMethod = productId ? 'PUT' : 'POST';
+            const requestMethod = 'POST';
 
             try
             {
-                const result = await fetch('http://localhost:9000/add-product', {
-                    method: 'POST',
+                const result = await fetch(requestUrl, {
+                    method: requestMethod,
                     body: formData,
                 });
                 const data = await result.json();
@@ -101,10 +128,7 @@ function AddProduct()
                 {
                     resetForm();
                     setAlert(true);
-                    setTimeout(() =>
-                    {
-                        setAlert(false);
-                    }, 5000); // Set timeout for 5 seconds
+                    setTimeout(() => setAlert(false), 5000); // Alert timeout for 5 seconds
                 }
             } catch (error)
             {
@@ -112,6 +136,7 @@ function AddProduct()
             }
         }
     };
+
     return (
         <section className='sec-height'>
             <div className='container'>
@@ -119,7 +144,7 @@ function AddProduct()
                     <div className='pro-inp-wrap'>
                         <div className="row gx-2">
                             <div className="col-md-12 mb-4">
-                                <h2 className='title'>Add Product</h2>
+                                <h2 className='title'>{productId ? "Update Product" : "Add Product"}</h2>
                             </div>
                             <div className="col-md-4 mb-3">
                                 <input type="text" className="form-control" placeholder='Product Name'
@@ -150,21 +175,22 @@ function AddProduct()
                                 </div>}
                             </div>
                             <div className="col-md-4 mb-3">
-                                <input className="form-control form-control-sm upload_file_inp" type="file" name="productImage" onChange={fileUpload} ref={fileValue} />
+                                <input className="form-control form-control-sm upload_file_inp" type="file"
+                                    name="productImage" onChange={fileUpload} ref={fileValue} />
                                 {error.productImage && <div className="invalid-feedback">
                                     <FontAwesomeIcon icon={faTriangleExclamation} /> {error.productImage}
                                 </div>}
                             </div>
                             <div className="col-md-4 mb-3">
-                                <button className='submit-btn'>Add Product</button>
+                                <button className='submit-btn'>{productId ? "Update Product" : "Add Product"}</button>
                             </div>
                         </div>
                     </div>
                 </form>
-                {(alert) ? <AlertSuccess /> : null}
+                {alert && <AlertSuccess />}
             </div>
         </section>
-    )
+    );
 }
 
 export default AddProduct;

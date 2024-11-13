@@ -18,13 +18,10 @@ function NavComp()
           {auth ?
             <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
               <li className="nav-item">
-                <Link className="nav-link" to='/'>Products</Link>
+                <Link className="nav-link" to='/products'>Products</Link>
               </li>
               <li className="nav-item">
                 <Link className="nav-link" to='/add'>Add Products</Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to='/update'>Update Products</Link>
               </li>
               <UserDropdown />
             </ul>

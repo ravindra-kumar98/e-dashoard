@@ -356,3 +356,15 @@ footer {
 .react-date-picker__button:enabled:focus .react-date-picker__button__icon {
   stroke: #671ddf !important;
 }
+
+img.prod-img {
+  width: 100px;
+  height: 70px;
+  object-fit: contain;
+}
+.table > :not(caption) > * > * {
+  vertical-align: middle;
+}
+.nav-item {
+  margin-left: 20px;
+}

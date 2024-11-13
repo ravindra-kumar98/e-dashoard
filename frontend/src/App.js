@@ -10,9 +10,9 @@ import AddProduct from './pages/AddProduct';
 //import ProductsList from './components/ProducstList';
 import Profile from './pages/Profile';
 import Product from './pages/Product';
-import Update from './pages/Update';
 import ForgetPassword from './pages/ForgetPassword';
 import EditProfile from './pages/EditProfile';
+import Dashboard from './pages/Dashboard';
 
 function App()
 {
@@ -22,9 +22,10 @@ function App()
         <NavComp />
         <Routes>
           <Route element={<PrivateRoute />}>
-            <Route path='/' element={<Product />} />
+            <Route path='/' element={<Dashboard />} />
+            <Route path='/products' element={<Product />} />
             <Route path='/add' element={<AddProduct />} />
-            <Route path='/update' element={<Update />} />
+            <Route path='/update-product/:productId' element={<AddProduct />} />
             {/* <Route path='/logout' element={<section className='sec-height'>logout</section>} /> */}
             <Route path='/profile' element={<Profile />} />
             <Route path='/edit-profile' element={<EditProfile />} />
